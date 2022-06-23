@@ -14,6 +14,12 @@ let pageSize = 5;
 let totalPages = 0;
 let dogs = [];
 
+const clamp = (n, min = Number.NEGATIVE_INFINITY, max = Number.POSITIVE_INFINITY) => {
+    return Math.max(min, Math.min(max, n));
+};
+
+const parseIntOrDefault = (value, def) => parseInt(value) || def;
+
 // handler functions
 async function handlePageLoad() {
     const params = new URLSearchParams(window.location.search);
@@ -23,9 +29,9 @@ async function handlePageLoad() {
     // page (make sure a number, default to 1)
     // pageSize (make sure a number, default to 5)
     breed = params.get('breed') || '';
-    age = parseInt(params.get('age')) || 0;
-    page = parseInt(params.get('page')) || 1;
-    pageSize = parseInt(params.get('pageSize')) || 5;
+    age = clamp(parseIntOrDefault(params.get('age'), 0), 0);
+    page = clamp(parseIntOrDefault(params.get('page'), 1), 1);
+    pageSize = clamp(parseIntOrDefault(params.get('pageSize'), 5), 1, 100);
 
     // calculate start and end of range from page and pageSize
     const start = (page - 1) * pageSize;
