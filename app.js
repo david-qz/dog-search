@@ -35,7 +35,10 @@ async function handlePageLoad() {
 
 function handleFilter(filter) {
     const params = new URLSearchParams(window.location.search);
-    // *** set breed, age, and page params based on filter
+    // set breed, age, and page params based on filter
+    params.set('breed', filter.breed);
+    params.set('age', filter.age);
+    params.delete('page');
     window.location.search = params.toString();
 }
 
