@@ -42,10 +42,13 @@ function handleFilter(filter) {
     window.location.search = params.toString();
 }
 
-function handlePaging(change, pageSize) {
+function handlePaging(change, newPageSize) {
     const params = new URLSearchParams(window.location.search);
-    // *** set page and pageSize params based on change and PageSize
+    // set page and pageSize params based on change and PageSize
     // make sure page not less than 1
+    const newPage = parseInt(newPageSize) === pageSize ? Math.max(1, Math.min(totalPages, page + change)) : 1;
+    params.set('page', newPage);
+    params.set('pageSize', newPageSize);
     window.location.search = params.toString();
 }
 
