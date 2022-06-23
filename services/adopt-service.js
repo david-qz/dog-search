@@ -5,12 +5,20 @@ const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 export async function getDogs(breed, age, { start, end }) {
     let query = client
         .from('dogs')
-        // *** set option to return an exact count
-        .select('id, name, breed');
+        // set option to return an exact count
+        .select('id, name, breed', { count: 'exact' });
 
-    // *** add breed and age filters if they exist
+    // add breed and age filters if they exist
+    if (breed) {
+        query = query.ilike('breed', `%${breed}%`);
+    }
 
-    // *** add paging by setting a range modifier
+    if (age) {
+        query = query.gte('age', age);
+    }
+
+    // add paging by setting a range modifier
+    query = query.range(start, end);
 
     const response = await query;
 
