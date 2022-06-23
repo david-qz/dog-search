@@ -8,7 +8,10 @@ export default function createFilter(form, { handleFilter }) {
         e.preventDefault();
         const formData = new FormData(form);
 
-        // *** call handleFilter with an object that has the breed and age;
+        // call handleFilter with an object that has the breed and age;
+        const breed = formData.get('breed');
+        const age = formData.get('age');
+        handleFilter({ breed, age });
     });
 
     return ({ breed, age }) => {
