@@ -17,18 +17,25 @@ let dogs = [];
 // handler functions
 async function handlePageLoad() {
     const params = new URLSearchParams(window.location.search);
-    // *** set state from params
+    // set state from params
     // breed
     // age (make sure a number, default to 0)
     // page (make sure a number, default to 1)
     // pageSize (make sure a number, default to 5)
+    breed = params.get('breed') || '';
+    age = parseInt(params.get('age')) || 0;
+    page = parseInt(params.get('page')) || 1;
+    pageSize = parseInt(params.get('pageSize')) || 5;
 
     // calculate start and end of range from page and pageSize
+    const start = (page - 1) * pageSize;
+    const end = start + (pageSize - 1); // end is inclusive so we must subtract 1
 
     const { data, count } = await getDogs(breed, age, { start, end });
     dogs = data;
 
     // set totalPages from calculating based on count and page Size
+    totalPages = Math.ceil(count / pageSize);
 
     display();
 }
